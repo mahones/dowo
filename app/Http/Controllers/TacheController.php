@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Tache;
 use App\Http\Requests\StoreTacheRequest;
 use App\Http\Requests\UpdateTacheRequest;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class TacheController extends Controller
 {
@@ -13,7 +15,10 @@ class TacheController extends Controller
      */
     public function index()
     {
-        //
+        $taches = Tache::latest()->get();
+        return Inertia::render('Taches/Index', [
+            'taches' => $taches,
+        ]);
     }
 
     /**
@@ -21,7 +26,7 @@ class TacheController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Taches/Create');
     }
 
     /**
@@ -29,7 +34,20 @@ class TacheController extends Controller
      */
     public function store(StoreTacheRequest $request)
     {
-        //
+        $validated = $request->validated([
+            'titre' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'priorite' => 'required|in:basse,moyenne,haute',
+            'date_echeance' => 'nullable|date',
+            'est_complete' => 'boolean',
+            'est_recurrente' => 'boolean',
+            'repetition' => 'nullable|string',
+            'temps_passe' => 'nullable|integer',
+        ]);
+
+        Tache::create($validated);
+
+        return redirect()->route('taches.index')->with('success', 'Tâche créée avec succès.');
     }
 
     /**
@@ -37,7 +55,12 @@ class TacheController extends Controller
      */
     public function show(Tache $tache)
     {
-        //
+        if (!$tache){
+            return redirect()->route('taches.index')->with('error', 'Tâche non trouvée.');
+        }
+        return Inertia::render('Taches/Show', [
+            'tache' => $tache,
+        ]);
     }
 
     /**
@@ -45,7 +68,7 @@ class TacheController extends Controller
      */
     public function edit(Tache $tache)
     {
-        //
+        
     }
 
     /**
@@ -53,7 +76,18 @@ class TacheController extends Controller
      */
     public function update(UpdateTacheRequest $request, Tache $tache)
     {
-        //
+        $validated = $request->validated([
+            'titre' => 'sometimes|string|max:255',
+            'description' => 'sometimes|string',
+            'priorite' => 'sometimes|in:basse,moyenne,haute',
+            'date_echeance' => 'sometimes|date',
+            'est_complete' => 'sometimes|boolean',
+            'est_recurrente' => 'sometimes|boolean',
+            'repetition' => 'sometimes|nullable|string',
+            'temps_passe' => 'sometimes|nullable|integer',
+        ]);
+
+        $tache->update($validated);
     }
 
     /**
@@ -61,6 +95,10 @@ class TacheController extends Controller
      */
     public function destroy(Tache $tache)
     {
-        //
+    
+        $tache->delete();
+
+        return redirect()->route('taches.index')->with('success', 'Tâche supprimée.');
+    
     }
 }

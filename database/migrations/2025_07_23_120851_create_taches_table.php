@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('taches', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('titre');
+            $table->text('description')->nullable();
+            $table->enum('priorite', ['basse', 'moyenne', 'haute'])->default('moyenne');
+            $table->date('date_echeance')->nullable();
+            $table->boolean('est_complete')->default(false);
+            $table->boolean('est_recurrente')->default(false);
+            $table->string('repetition')->nullable(); // Ceci est pour la gestion des tâches récurrentes journalières, hebdomadaires, mensuelles, etc.
+            $table->unsignedInteger('temps_passe')->nullable(); // Temps passé sur la tâche, en minutes ou secondes selon votre préférence
             $table->timestamps();
         });
     }
