@@ -2,16 +2,21 @@ import React from 'react';
 // PageProps n'existe pas, on utilise directement les props typés
 // import { Link } from '@inertiajs/react';
 
+type User ={
+    id: number;
+    name: string;
+}
 type Tache = {
     id: number;
     user_id: number;
     titre: string;
     description: string;
-    priorite: string;
-    date_echeance?: string;
-    est_complete?: boolean;
-    est_recurrente?: boolean;
-    temps_passe?: number;
+    user: User; // Ajout de l'utilisateur
+    // priorite: string;
+    // date_echeance?: string;
+    // est_complete?: boolean;
+    // est_recurrente?: boolean;
+    // temps_passe?: number;
 };
 
 interface ListeProps {
@@ -28,6 +33,7 @@ const Index: React.FC<ListeProps> = ({ taches }) => {
                     <p>{tache.id}</p>
                     <p>This is another paragraph. {tache.titre}</p>
                     <p>This is a paragraph. {tache.description}</p>
+                    <p>This is a paragraph. {tache.user.name}</p>
                 </div>
             ))}
         </div>

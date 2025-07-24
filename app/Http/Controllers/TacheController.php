@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTacheRequest;
 use App\Http\Requests\UpdateTacheRequest;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Pail\ValueObjects\Origin\Console;
 
 class TacheController extends Controller
 {
@@ -15,7 +16,7 @@ class TacheController extends Controller
      */
     public function index()
     {
-        $taches = Tache::latest()->get();
+        $taches = Tache::with('user')->latest()->get();
         return Inertia::render('Taches/Index', [
             'taches' => $taches,
         ]);
