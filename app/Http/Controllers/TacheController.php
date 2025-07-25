@@ -17,7 +17,7 @@ class TacheController extends Controller
     public function index()
     {
         $taches = Tache::with('user')->latest()->get();
-        return Inertia::render('Taches/Index', [
+        return Inertia::render('taches/Index', [
             'taches' => $taches,
         ]);
     }
@@ -27,7 +27,7 @@ class TacheController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Taches/Create');
+        return Inertia::render('taches/Create');
     }
 
     /**
@@ -56,13 +56,33 @@ class TacheController extends Controller
      */
     public function show(Tache $tache)
     {
+        
         if (!$tache){
             return redirect()->route('taches.index')->with('error', 'Tâche non trouvée.');
         }
-        return Inertia::render('Taches/Show', [
+       // Debug avant de charger la relation
+        dump('Tâche avant load:', $tache->toArray());
+        
+        // $tache->load('user');
+        
+        // // Debug après avoir chargé la relation
+        // dump('Tâche après load:', $tache->toArray());
+        return Inertia::render('taches/Show', [
             'tache' => $tache,
         ]);
     }
+
+    //  public function show(Tache $tache)
+    // {
+        
+    //     if (!$tache){
+    //         return redirect()->route('taches.index')->with('error', 'Tâche non trouvée.');
+    //     }
+    //     $tache->load('user');// dump supprimé pour permettre l'envoi des vraies données à Inertia
+    //     return Inertia::render('Taches/Show', [
+    //         'tache' => $tache,
+    //     ]);
+    // }
 
     /**
      * Show the form for editing the specified resource.

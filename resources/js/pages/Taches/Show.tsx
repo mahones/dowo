@@ -1,8 +1,14 @@
 import React from 'react';
 // PageProps n'existe pas, on utilise directement les props typés
 
+type User = {
+    id: number;
+    name: string;
+};
+
 type Tache = {
     id: number;
+    user_id: number;
     titre: string;
     description?: string;
     priorite: string;
@@ -10,6 +16,7 @@ type Tache = {
     est_complete?: boolean;
     est_recurrente?: boolean;
     temps_passe?: number;
+    user: User; // Ajout de l'utilisateur
 };
 
 interface ShowProps {
@@ -21,6 +28,9 @@ const Show: React.FC<ShowProps> = ({ tache }) => {
         <div className="mx-auto mt-10 max-w-xl rounded bg-white p-4 shadow">
             <h1 className="mb-4 text-2xl font-bold">Détail de la tâche</h1>
             <ul className="space-y-2">
+                <li>
+                    <strong>Utilisateur :</strong> {tache.user ? tache.user.name : 'Non défini'}
+                </li>
                 <li>
                     <strong>Titre :</strong> {tache.titre}
                 </li>
