@@ -10,6 +10,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+/*************  ✨ Windsurf Command ⭐  *************/
+/**
+ * Page principale des taches
+ * 
+ * Affiche un bouton permettant de creer une nouvelle tache
+ * 
+ * @returns {JSX.Element}
+ */
+/*******  ecdc6e69-7fb3-40da-bd8e-6aeb93d724b4  *******/
 export default function Index() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -24,46 +33,3 @@ export default function Index() {
 }
 
 
-// import React from 'react';
-// // PageProps n'existe pas, on utilise directement les props typés
-// // import { Link } from '@inertiajs/react';
-
-// type User ={
-//     id: number;
-//     name: string;
-// }
-// type Tache = {
-//     id: number;
-//     user_id: number;
-//     titre: string;
-//     description: string;
-//     user: User; // Ajout de l'utilisateur
-//     // priorite: string;
-//     // date_echeance?: string;
-//     // est_complete?: boolean;
-//     // est_recurrente?: boolean;
-//     // temps_passe?: number;
-// };
-
-// interface ListeProps {
-//     taches: Tache[];
-// }
-
-// const Index: React.FC<ListeProps> = ({ taches }) => {
-//     return (
-
-//         <div>
-//             <h1>Hello World</h1>
-//             { taches.map((tache:Tache) =>(
-//                 <div>
-//                     <p>{tache.id}</p>
-//                     <p>This is another paragraph. {tache.titre}</p>
-//                     <p>This is a paragraph. {tache.description}</p>
-//                     <p>This is a paragraph. {tache.user.name}</p>
-//                 </div>
-//             ))}
-//         </div>
-//       );
-// };
-
-// export default Index;
