@@ -20,7 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('taches/{tache}', [TacheController::class, 'show'])->name('taches.show');
     Route::put('taches/{tache}', [TacheController::class, 'update'])->name('taches.update');
     Route::get('taches/{tache}/edit', [TacheController::class, 'edit'])->name('taches.edit');
-    Route::delete('taches/{tache}', [TacheController::class, 'destroy'])->name('taches.destroy');
+    Route::delete('ville/{tache}', [TacheController::class, 'destroy'])->name('taches.destroy');
 
 });
 

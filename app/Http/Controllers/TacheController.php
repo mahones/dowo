@@ -16,11 +16,13 @@ class TacheController extends Controller
      */
     public function index()
     {
-        $taches = Tache::with('user')->latest()->get();
+
+        $taches = Tache::with(relations: 'user')->latest()->get();
         return Inertia::render('taches/Index', [
             'taches' => $taches,
         ]);
     }
+    
 
     /**
      * Show the form for creating a new resource.

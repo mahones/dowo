@@ -3,6 +3,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { Inertia } from '@inertiajs/inertia';
 import { SquarePen, Trash2, View } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -70,11 +71,16 @@ export default function Index() {
                                             <SquarePen />
                                         </Button>
                                     </Link>
-                                    <Link href={route('taches.destroy', tache.id)}>
-                                        <Button className="rounded bg-red-500 font-bold text-white hover:bg-red-600">
+                                    
+                                        <Button className="rounded bg-red-500 font-bold text-white hover:bg-red-600"
+                                        onClick={() => {
+                                            if (confirm('Supprimer cette tâche ?')) {
+                                                Inertia.delete(route('taches.destroy', tache.id), { preserveScroll: true });
+                                            }
+                                        }}
+                                        >
                                             <Trash2 />
                                         </Button>
-                                    </Link>
                                 </TableCell>
                             </TableRow>
                         ))}

@@ -61,6 +61,6 @@ class TachePolicy
      */
     public function forceDelete(User $user, Tache $tache): bool
     {
-        return false;
+        return true;
     }
 }
