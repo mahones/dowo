@@ -27,6 +27,7 @@ class TacheController extends Controller
      */
     public function create()
     {
+        
         return Inertia::render('taches/Create');
     }
 
@@ -35,22 +36,13 @@ class TacheController extends Controller
      */
     public function store(StoreTacheRequest $request)
     {
-        $validated = $request->validated([
-            'titre' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'priorite' => 'required|in:basse,moyenne,haute',
-            'date_echeance' => 'nullable|date',
-            'est_complete' => 'boolean',
-            'est_recurrente' => 'boolean',
-            'repetition' => 'nullable|string',
-            'temps_passe' => 'nullable|integer',
-        ]);
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->id(); // Ajoute l'id de l'utilisateur connecté
 
         Tache::create($validated);
 
         return redirect()->route('taches.index')->with('success', 'Tâche créée avec succès.');
     }
-
     /**
      * Display the specified resource.
      */
@@ -60,36 +52,20 @@ class TacheController extends Controller
         if (!$tache){
             return redirect()->route('taches.index')->with('error', 'Tâche non trouvée.');
         }
-       // Debug avant de charger la relation
-        dump('Tâche avant load:', $tache->toArray());
-        
-        // $tache->load('user');
-        
-        // // Debug après avoir chargé la relation
-        // dump('Tâche après load:', $tache->toArray());
+      
         return Inertia::render('taches/Show', [
             'tache' => $tache,
         ]);
     }
-
-    //  public function show(Tache $tache)
-    // {
-        
-    //     if (!$tache){
-    //         return redirect()->route('taches.index')->with('error', 'Tâche non trouvée.');
-    //     }
-    //     $tache->load('user');// dump supprimé pour permettre l'envoi des vraies données à Inertia
-    //     return Inertia::render('Taches/Show', [
-    //         'tache' => $tache,
-    //     ]);
-    // }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Tache $tache)
     {
-        
+        return Inertia::render('taches/Edit', [
+            'tache' => $tache,
+        ]);     
     }
 
     /**
@@ -97,18 +73,9 @@ class TacheController extends Controller
      */
     public function update(UpdateTacheRequest $request, Tache $tache)
     {
-        $validated = $request->validated([
-            'titre' => 'sometimes|string|max:255',
-            'description' => 'sometimes|string',
-            'priorite' => 'sometimes|in:basse,moyenne,haute',
-            'date_echeance' => 'sometimes|date',
-            'est_complete' => 'sometimes|boolean',
-            'est_recurrente' => 'sometimes|boolean',
-            'repetition' => 'sometimes|nullable|string',
-            'temps_passe' => 'sometimes|nullable|integer',
-        ]);
-
+        $validated = $request->validated();
         $tache->update($validated);
+        return redirect()->route('taches.index', $tache)->with('success', 'Tâche mise à jour avec succès.');
     }
 
     /**
@@ -116,9 +83,7 @@ class TacheController extends Controller
      */
     public function destroy(Tache $tache)
     {
-    
         $tache->delete();
-
         return redirect()->route('taches.index')->with('success', 'Tâche supprimée.');
     
     }

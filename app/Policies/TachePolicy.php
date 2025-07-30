@@ -13,7 +13,7 @@ class TachePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class TachePolicy
      */
     public function view(User $user, Tache $tache): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class TachePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class TachePolicy
      */
     public function update(User $user, Tache $tache): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class TachePolicy
      */
     public function delete(User $user, Tache $tache): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class TachePolicy
      */
     public function restore(User $user, Tache $tache): bool
     {
-        return false;
+        return true;
     }
 
     /**
