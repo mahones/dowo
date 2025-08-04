@@ -1,9 +1,9 @@
 // Importation des composants nécessaires pour l'affichage du détail d'une tâche
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import type { Tache } from '@/types/Tache';
 import { Head } from '@inertiajs/react';
 import React from 'react';
-import type { Tache } from '@/types/Tache';
 
 // Définition du fil d'Ariane (breadcrumbs) pour la navigation
 const breadcrumbs: BreadcrumbItem[] = [
@@ -13,13 +13,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-
-
 // Définition du type des propriétés attendues par le composant Show
 interface ShowProps {
     tache: Tache;
 }
-
 
 // Composant d'affichage du détail d'une tâche
 const Show: React.FC<ShowProps> = ({ tache }) => {
