@@ -1,5 +1,7 @@
 // Importation des composants UI, hooks et utilitaires nécessaires pour la page d'index des tâches
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { useTacheStore } from '@/store/FiltreTache';
@@ -8,6 +10,7 @@ import { Tache } from '@/types/Tache';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { SquarePen, Trash2, View } from 'lucide-react';
+
 import React from 'react';
 
 // Définition du fil d'Ariane (breadcrumbs)
@@ -66,23 +69,32 @@ export default function Index() {
                     <Button>Creer une tache</Button>
                 </Link>
                 {/* Sélecteur de priorité pour filtrer dynamiquement la liste des tâches */}
-                <div className="mt-4 flex items-center gap-4">
+                <div className="mt-4 flex justify-between gap-4 ">
                     <h1 className="mb-4 text-2xl font-bold">Liste des Taches</h1>
-                    <select
-                        className="rounded border px-2 py-1"
-                        value={filtre.priorite}
-                        onChange={(e) => setFiltre({ priorite: e.target.value as 'toutes' | 'basse' | 'moyenne' | 'haute' })}
-                    >
-                        {/* Option pour afficher toutes les priorités */}
-                        <option value="toutes">Toutes</option>
-                        {/* Option pour afficher uniquement les tâches de priorité basse */}
-                        <option value="basse">Basse</option>
-                        {/* Option pour afficher uniquement les tâches de priorité moyenne */}
-                        <option value="moyenne">Moyenne</option>
-                        {/* Option pour afficher uniquement les tâches de priorité haute */}
-                        <option value="haute">Haute</option>
-                    </select>
                 </div>
+                <div className="flex justify-between mb-4">
+                    <div>
+
+                    </div>
+                    <div>
+                        <Label htmlFor="priorite">Filtrer par priorité</Label>
+                        <Select
+                            value={filtre.priorite}
+                            onValueChange={(value) => setFiltre({ priorite: value as 'toutes' | 'basse' | 'moyenne' | 'haute' })}
+                        >
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Priorité" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="toutes">Toutes</SelectItem>
+                                <SelectItem value="basse">Basse</SelectItem>
+                                <SelectItem value="moyenne">Moyenne</SelectItem>
+                                <SelectItem value="haute">Haute</SelectItem>
+                            </SelectContent>
+                        </Select> 
+                    </div>
+                       
+                    </div>
 
                 {/* Tableau affichant la liste des tâches filtrées selon la priorité */}
                 <Table>
