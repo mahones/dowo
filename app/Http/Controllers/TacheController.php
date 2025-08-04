@@ -12,56 +12,66 @@ use Laravel\Pail\ValueObjects\Origin\Console;
 class TacheController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Affiche la liste de toutes les tâches avec l'utilisateur associé.
+     * Retourne la vue Inertia pour l'index des tâches.
      */
     public function index()
     {
-
+        // Récupère toutes les tâches avec la relation user, triées par date de création décroissante
         $taches = Tache::with(relations: 'user')->latest()->get();
+        // Retourne la vue Inertia avec la liste des tâches
         return Inertia::render('taches/Index', [
             'taches' => $taches,
         ]);
     }
-    
 
     /**
-     * Show the form for creating a new resource.
+     * Affiche le formulaire de création d'une nouvelle tâche.
+     * Retourne la vue Inertia pour la création de tâche.
      */
     public function create()
     {
-        
         return Inertia::render('taches/Create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Enregistre une nouvelle tâche en base de données.
+     * Associe la tâche à l'utilisateur connecté.
+     * Redirige vers l'index avec un message de succès.
      */
     public function store(StoreTacheRequest $request)
     {
         $validated = $request->validated();
-        $validated['user_id'] = auth()->id(); // Ajoute l'id de l'utilisateur connecté
+        // Ajoute l'id de l'utilisateur connecté à la tâche
+        $validated['user_id'] = auth()->id();
 
+        // Crée la tâche en base de données
         Tache::create($validated);
 
+        // Redirige vers l'index avec un message de succès
         return redirect()->route('taches.index')->with('success', 'Tâche créée avec succès.');
     }
+
     /**
-     * Display the specified resource.
+     * Affiche le détail d'une tâche spécifique.
+     * Si la tâche n'existe pas, redirige vers l'index avec un message d'erreur.
+     * Retourne la vue Inertia pour l'affichage de la tâche.
      */
     public function show(Tache $tache)
     {
-        
         if (!$tache){
             return redirect()->route('taches.index')->with('error', 'Tâche non trouvée.');
         }
-      
+        // Récupère la tâche avec la relation user
+        $tache_user = Tache::with('user')->find($tache->id);
         return Inertia::render('taches/Show', [
-            'tache' => $tache,
+            'tache' => $tache_user,
         ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Affiche le formulaire d'édition d'une tâche existante.
+     * Retourne la vue Inertia pour l'édition de la tâche.
      */
     public function edit(Tache $tache)
     {
@@ -71,7 +81,8 @@ class TacheController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Met à jour une tâche existante en base de données.
+     * Redirige vers l'index avec un message de succès.
      */
     public function update(UpdateTacheRequest $request, Tache $tache)
     {
@@ -81,12 +92,12 @@ class TacheController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprime une tâche de la base de données.
+     * Redirige vers l'index avec un message de succès.
      */
     public function destroy(Tache $tache)
     {
         $tache->delete();
         return redirect()->route('taches.index')->with('success', 'Tâche supprimée.');
-    
     }
 }

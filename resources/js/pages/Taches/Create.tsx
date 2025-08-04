@@ -1,3 +1,4 @@
+// Importation des composants UI, hooks et types nécessaires pour la page de création de tâche
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,8 +12,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { ChevronDownIcon } from 'lucide-react';
 import React from 'react';
-// import { Button } from '@/components/ui/button';
-// import { Link } from '@inertiajs/react';
+// Définition du fil d'Ariane (breadcrumbs) pour la navigation
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Créer une tâche',
@@ -21,8 +21,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Create() {
+    // Gère l'ouverture du popover pour la sélection de date
     const [open, setOpen] = React.useState(false);
+    // Stocke la date d'échéance sélectionnée
     const [date, setDate] = React.useState<Date | undefined>(undefined);
+    // Hook useForm d'Inertia pour gérer le formulaire de création de la tâche
     const { data, setData, post } = useForm({
         titre: '',
         description: '',
@@ -33,23 +36,33 @@ export default function Create() {
         repetition: '',
         temps_passe: 0,
     });
-    const handleSubmit = (e: React.FormEvent) => {
-        console.log(data);
 
+    /**
+     * Soumission du formulaire de création de la tâche.
+     * Envoie les données saisies au backend via Inertia.
+     */
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route('taches.store'));
     };
+
+    // Rendu du composant de création de tâche
     return (
         <>
+            {/* Layout principal avec fil d'Ariane */}
             <AppLayout breadcrumbs={breadcrumbs}>
                 <Head title="Créer une tâche" />
                 <div className="w-8/12 p-4">
+                    {/* Formulaire de création de la tâche */}
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        {/* Champ de saisie du titre de la tâche */}
                         <div className="space-y-1.5">
                             <Label htmlFor="titre">Titre</Label>
                             <Input id="titre" placeholder="Titre de la tâche" value={data.titre} onChange={(e) => setData('titre', e.target.value)} />
                         </div>
+                        {/* Ligne de champs pour la priorité, la répétition et la date d'échéance */}
                         <div className="flex justify-between gap-4">
+                            {/* Sélecteur de priorité */}
                             <div className="space-y-1.5">
                                 <Label htmlFor="priorite">Priorité</Label>
                                 <Select value={data.priorite} onValueChange={(value) => setData('priorite', value)}>
@@ -64,6 +77,7 @@ export default function Create() {
                                 </Select>
                             </div>
 
+                            {/* Sélecteur de répétition */}
                             <div className="space-y-1.5">
                                 <Label htmlFor="repetition">Répétition</Label>
                                 <Select value={data.repetition} onValueChange={(value) => setData('repetition', value)}>
@@ -79,6 +93,7 @@ export default function Create() {
                                 </Select>
                             </div>
 
+                            {/* Sélecteur de date d'échéance avec calendrier */}
                             <div className="space-y-1.5">
                                 <Label htmlFor="date">Date d'échéance</Label>
                                 <div>
@@ -108,6 +123,7 @@ export default function Create() {
                             </div>
                         </div>
 
+                        {/* Champ de saisie de la description de la tâche */}
                         <div className="space-y-1.5">
                             <Label htmlFor="description">Description</Label>
                             <Textarea
@@ -118,6 +134,7 @@ export default function Create() {
                             />
                         </div>
 
+                        {/* Case à cocher pour indiquer si la tâche est récurrente */}
                         <div className="space-y-1.5">
                             <div className="flex items-center space-x-2">
                                 <Checkbox
@@ -129,6 +146,7 @@ export default function Create() {
                             </div>
                         </div>
 
+                        {/* Bouton pour soumettre le formulaire et enregistrer la nouvelle tâche */}
                         <Button type="submit">Enregistrer une tâche</Button>
                     </form>
                 </div>
